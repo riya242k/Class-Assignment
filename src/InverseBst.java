@@ -1,78 +1,127 @@
-public class InverseBst {
+import java.util.*;  
+public class BinaryNode2
+{ 
+    static class Node
+{ 
+    int data; 
+    Node left, right; 
+    public Node(int item) 
+    { 
+        data = item; 
+        left = right = null; 
+    } 
+} ;
+    Node root; 
+  
+    public BinaryNode2() 
+    { 
+        root = null; 
+    }
+    void printLevelOrder(Node root) 
+    { 
+        int h = height(root); 
+        int i; 
+        for (i=h; i>=1; i--) {
+            printGivenLevel(root, i);
+            System.out.println(" ");
+            } 
+    }
+    int height(Node root) 
+    { 
+        if (root == null) 
+           return 0; 
+        else
+        { 
 
-	class Node{
-		int key;
-		Node left,right;
-		Node(int data)
-		{
-			key=data;
-			left=right=null;
-		}
-	}
-	Node root;
-       InverseBst()
-	{
-		root=null;
-	}
-	
-	Node insertRec(Node root,int key)
-	{
-		if(root==null) {
-			root=new Node(key);
-		return root;
-		}
-		if(key < root.key){
-            root.left = insertRec(root.left, key);
-        }else if(key > root.key){
-            root.right = insertRec(root.right, key);
+            int lheight = height(root.left); 
+            int rheight = height(root.right);
+            if (lheight >= rheight) 
+                return(lheight+1); 
+            else return(rheight+1);  
+        } 
+    }
+    void printGivenLevel (Node root ,int level) 
+    { 
+        if (root == null) 
+            return; 
+        if (level == 1) 
+            System.out.print(root.data + " "); 
+        else if (level > 1) 
+        { 
+            printGivenLevel(root.left, level-1); 
+            printGivenLevel(root.right, level-1); 
+        } 
+    } 
+    Node insert(Node root, int data)  
+   {  
+    Node node= new Node(data);
+    if(root==null){
+        return node;
+    } 
+    Node parent=null, current = root;
+    while(current!=null){
+        parent=current;
+        if(current.data>=data){
+            current=current.right;
         }
-        return root;
-	}
-	void inOrderTraversal(Node node){
-        if(node != null){
-            inOrderTraversal(node.left);
-            System.out.print(node.key +" ");
-            inOrderTraversal(node.right);
+        else{
+            current=current.left;
         }
     }
-	void preOrderTraversal(Node node){
-        if(node != null){
-            System.out.print(node.key + " ");
-            preOrderTraversal(node.left);
-            preOrderTraversal(node.right);
-        }
+    if(parent.data>=data){
+        parent.right=node;
     }
-	
-	void postOrderTraversal(Node node){
-        if(node != null){
-            System.out.print(node.key + " ");
-            postOrderTraversal(node.right);
-            postOrderTraversal(node.left);
-        }
+    else{
+        parent.left=node;
     }
-	
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-	 InverseBst tree = new InverseBst();
-        tree.root = tree.insertRec(tree.root, 40);
-        tree.root = tree.insertRec(tree.root, 30);
-        tree.root = tree.insertRec(tree.root, 70);
-        tree.root = tree.insertRec(tree.root, 20);
-        tree.root = tree.insertRec(tree.root, 35);
-        tree.root = tree.insertRec(tree.root, 50);
-        tree.root = tree.insertRec(tree.root, 80);
-
-        tree.inOrderTraversal(tree.root);
-        System.out.println();
-
-        tree.preOrderTraversal(tree.root);
-        System.out.println();
-
-        tree.postOrderTraversal(tree.root);
-        System.out.println();
-	   
-	}
-
+    return root;
+    }
+    void Inorder(Node root)  
+   {  
+    if (root == null)  
+        return;  
+    else {  
+        Inorder(root.left);  
+        System.out.print( root.data +" ");  
+        Inorder(root.right);  
+    }  
+   } 
+   void Preorder(Node root)  
+   {  
+    if (root == null)  
+        return;  
+    else {  
+    	System.out.print( root.data +" ");
+        Preorder(root.left);    
+        Preorder(root.right);  
+    }  
+   } 
+   void Postorder(Node root)  
+   {  
+    if (root == null)  
+        return;  
+    else {  
+        Postorder(root.left);   
+        Postorder(root.right); 
+        System.out.print( root.data +" ");  
+    }  
+   }    
+public static void main(String args[])  
+{
+    BinaryNode2 tree=new BinaryNode2();
+    Node root = null;  
+    root = tree.insert(root, 40);  
+    tree.insert(root, 70);  
+    tree.insert(root, 30);  
+    tree.insert(root, 80);  
+    tree.insert(root, 50);  
+    tree.insert(root, 35);  
+    tree.insert(root, 20);    
+    tree.printLevelOrder(root);
+    tree.Inorder(root);
+    System.out.println();
+    tree.Preorder(root);
+    System.out.println();
+    tree.Postorder(root); 
+    } 
 }
